@@ -29,6 +29,7 @@
 <body>
     <div id="strava-wrapped">Strava Wrapped</div>
     {% if 'access_token' in session %}
+        <img id="profile-picture" src="{{ athlete_info.profile }}" alt="Profile Picture">
         <p>Logged in as {{ athlete_info.firstname }} {{ athlete_info.lastname }}. {{ athlete_info }}</p>
     {% else %}
         <a href="{{ login_url }}" id="login-button">Login with Strava</a>
