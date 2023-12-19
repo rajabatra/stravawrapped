@@ -15,7 +15,19 @@ services:
       - 8000:8000
     volumes:
       - "./:/app"
-  
+  # frontend:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile.frontend
+  #   ports:
+  #     - "3000:3000"
+  #   depends_on:
+  #     - server
+  #   volumes:
+  #     - ./frontend/strava-wrapped/stravawrap:/app/strava-wrapped/stravawrap
+  #   stdin_open: true
+  #   tty: true
+
 
 # The commented out section below is an example of how to define a PostgreSQL
 # database that your application can use. `depends_on` tells Docker Compose to

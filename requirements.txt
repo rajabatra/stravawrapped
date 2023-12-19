@@ -7,4 +7,8 @@ redis==3.4.1
 mock==2.0.0
 Flask-SQLAlchemy==3.1.1
 cachelib==0.10.2
-Flask-OAuthlib
+flask-cors==3.0.10
+requests==2.26.0
+stravalib == 1.4
+
+

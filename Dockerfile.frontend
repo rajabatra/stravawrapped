@@ -1,0 +1,24 @@
+
+FROM node:18-alpine
+ 
+# Set the working directory.
+WORKDIR /app
+ 
+# Copy the package.json file.
+COPY frontend/strava-wrapped/stravawrap/package*.json ./
+ 
+# Install application dependencies.
+RUN apt-get update && apt-get upgrade -y && \
+    apt-get install -y nodejs \
+    npm  
+RUN npm install
+
+ 
+# Copy the rest of the application files.
+COPY . .
+ 
+# Expose the port.
+EXPOSE 3000
+ 
+# Run the application.
+CMD [“npm”, “start”]

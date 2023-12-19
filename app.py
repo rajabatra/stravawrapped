@@ -1,82 +1,61 @@
-from flask import Flask, render_template, redirect, url_for, session
-#from flask_oauthlib.client import OAuth
+from flask import Flask, redirect, url_for, session, request, jsonify, render_template
 import requests
-from urllib.parse import urlencode
+import os
 
 app = Flask(__name__)
-app.secret_key = 'your_secret_key'  # Change this to a secure secret key in production
 
-# Strava OAuth settings
-STRAVA_CLIENT_ID = 'your_strava_client_id'
-STRAVA_CLIENT_SECRET = 'your_strava_client_secret'
-STRAVA_REDIRECT_URI = 'http://localhost:5000/login/authorized'  # Update with your redirect URI
+# Replace these values with your Strava API credentials
+CLIENT_ID = '118376'
+CLIENT_SECRET = 'b7e06ff027a718b797b30e40395d3ee8ba5ea314'
+REDIRECT_URI = 'http://localhost:8000/callback'  # Update with your actual callback URI
+AUTH_URL = 'https://www.strava.com/oauth/authorize'
+TOKEN_URL = 'https://www.strava.com/oauth/token'
+API_URL = 'https://www.strava.com/api/v3'
 
-STRAVA_API_URL = 'https://www.strava.com/api/v3/'
+app.secret_key = os.urandom(24)
 
+# @app.route('/')
+# def home():
+#     if 'access_token' in session:
+#         athlete_info = get_athlete_info()
+#         return f'Logged in as {athlete_info["firstname"]} {athlete_info["lastname"]}. {athlete_info}'
+#     else:
+#         return '<a href="/login">Login with Strava</a>'
 @app.route('/')
-def index():
-    return render_template('login.html')
+def home():
+    if 'access_token' in session:
+        athlete_info = get_athlete_info()
+        return render_template('home.html', athlete_info=athlete_info)
+    else:
+        return render_template('home.html', login_url=url_for('login'))
 
 @app.route('/login')
 def login():
-    params = {
-        'client_id': STRAVA_CLIENT_ID,
-        'redirect_uri': STRAVA_REDIRECT_URI,
-        'response_type': 'code',
-        'scope': 'read_all',  # Adjust the scope based on your needs
-    }
-    strava_authorize_url = 'https://www.strava.com/oauth/authorize?' + urlencode(params)
-    return redirect(strava_authorize_url)
+    return redirect(f'{AUTH_URL}?client_id={CLIENT_ID}&redirect_uri={REDIRECT_URI}&response_type=code&scope=read')
 
-@app.route('/login/authorized')
-def authorized():
+@app.route('/callback')
+def callback():
     code = request.args.get('code')
+    if code:
+        token_response = get_token(code)
+        if 'access_token' in token_response:
+            session['access_token'] = token_response['access_token']
+    return redirect(url_for('home'))
 
-    if not code:
-        return 'Access denied: No authorization code provided.'
-
-    # Exchange authorization code for access token
-    token_url = 'https://www.strava.com/oauth/token'
+def get_token(code):
     data = {
-        'client_id': STRAVA_CLIENT_ID,
-        'client_secret': STRAVA_CLIENT_SECRET,
+        'client_id': CLIENT_ID,
+        'client_secret': CLIENT_SECRET,
         'code': code,
-        'grant_type': 'authorization_code',
+        'grant_type': 'authorization_code'
     }
+    response = requests.post(TOKEN_URL, data=data)
+    return response.json()
 
-    response = requests.post(token_url, data=data)
-    token_data = response.json()
-
-    if 'access_token' not in token_data:
-        return 'Failed to obtain access token.'
-
-    session['strava_token'] = token_data['access_token']
-    session['strava_user_id'] = get_strava_user_id(token_data['access_token'])
-
-    return redirect(url_for('dashboard'))
-
-@app.route('/logout')
-def logout():
-    session.pop('strava_token', None)
-    return redirect(url_for('index'))
-
-@app.route('/dashboard')
-def dashboard():
-    if 'strava_token' not in session:
-        return redirect(url_for('index'))
-
-    # Fetch user-specific data from Strava using the access token
-    strava_token = session['strava_token']
-    # Use the 'strava_token' to make API requests to Strava
-
-    return render_template('dashboard.html', username=strava_token)
-
-def get_strava_user_id(access_token):
-    # Helper function to fetch user ID from Strava using the access token
-    headers = {'Authorization': f'Bearer {access_token}'}
-    response = requests.get(f'{STRAVA_API_URL}athlete', headers=headers)
-    user_data = response.json()
-    return user_data.get('id')
+def get_athlete_info():
+    headers = {'Authorization': f'Bearer {session["access_token"]}'}
+    response = requests.get(f'{API_URL}/athlete', headers=headers)
+    return response.json()
 
 if __name__ == '__main__':
     app.run(debug=True)
