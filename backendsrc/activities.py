@@ -1,28 +1,34 @@
-import datetime
-import requests
-from flask import session
-API_URL = 'https://www.strava.com/api/v3'
-CLIENT_ID = '118376'
-CLIENT_SECRET = 'b7e06ff027a718b797b30e40395d3ee8ba5ea314'
-TOKEN_URL = 'https://www.strava.com/oauth/token'
+import pandas as pd
+import mplleaflet
+import folium
+import matplotlib.pyplot as plt
+from matplotlib.ticker import MaxNLocator
 
-def get_token(code):
-    data = {
-        'client_id': CLIENT_ID,
-        'client_secret': CLIENT_SECRET,
-        'code': code,
-        'grant_type': 'authorization_code'
-    }
-    response = requests.post(TOKEN_URL, data=data)
-    return response.json()
 
-def get_athlete_activities():
-    headers = {'Authorization': f'Bearer {session["access_token"]}'}
+def create_tables(df):
 
-    # Calculate the start date of the current year
-    current_year_start = datetime.datetime(datetime.datetime.now().year, 1, 1)
-    after_timestamp = int(current_year_start.timestamp())
+    totals = {}
+    totals = {'TotalDistance': 0, 'TotalTime': 0, 'latlng': {}}
+    for index, row in df.iterrows():
+        
+        distance = row['distance']
+        time = row['moving_time']
+        
+
+        
+        
+
+        totals['TotalDistance'] += distance
+        totals['TotalTime'] += time
+    df = df[df['summary_polyline'].apply(lambda x: bool(x))]
+    coordinates = df['summary_polyline'].tolist()
+    totals['latlng'] = coordinates
+       
     
-    # Retrieve activities for the authenticated athlete starting from the current year
-    response = requests.get(f'{API_URL}/athlete/activities', headers=headers, params={'after': after_timestamp})
-    return response.json()
+
+    return totals
+
+
+
+
+

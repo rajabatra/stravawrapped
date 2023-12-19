@@ -2,8 +2,9 @@ import datetime
 from flask import Flask, redirect, url_for, session, request, jsonify, render_template
 import requests
 import os
+import pandas as pd
 
-from backendsrc import activities, activities
+from backendsrc import activities
 
 app = Flask(__name__)
 
@@ -28,7 +29,8 @@ app.secret_key = os.urandom(24)
 def home():
     if 'access_token' in session:
         athlete_info = get_athlete_activities()
-        return render_template('home.html', athlete_info=athlete_info)
+        totaldistance = activities.create_tables(athlete_info)
+        return render_template('home.html', athlete_info=totaldistance)
     else:
         return render_template('home.html', login_url=url_for('login'))
 
@@ -79,8 +81,28 @@ def get_athlete_activities():
 
         activities.extend(activities_page)
         page += 1
+    
+    combined_json = {"activities": activities}
 
-    return activities
+
+    # Convert the list of activities to a DataFrame
+    
+    runs_data = []
+    for activity in combined_json['activities']:
+        run_info = {
+            'name': activity['name'],
+            'distance': activity['distance'],
+            'moving_time': activity['moving_time'],
+            'total_elevation_gain': activity['total_elevation_gain'],
+            'start_date': activity['start_date'],
+            'summary_polyline': activity['map']['summary_polyline']
+        }
+        runs_data.append(run_info)
+
+    # Create a DataFrame
+    df = pd.DataFrame(runs_data)
+    return df
+    #return activities
 
 
 
