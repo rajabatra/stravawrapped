@@ -30,7 +30,8 @@ def home():
     if 'access_token' in session:
         athlete_info = get_athlete_activities()
         totaldistance = activities.create_tables(athlete_info)
-        return render_template('home.html', athlete_info=totaldistance)
+        plotdata = activities.create_plot(totaldistance['latlng'])
+        return render_template('home.html', athlete_info=totaldistance, plotdata = plotdata)
     else:
         return render_template('home.html', login_url=url_for('login'))
 
