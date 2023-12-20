@@ -35,16 +35,22 @@ def create_tables(df):
 
     return totals
 
-def generate_pastel_color():
-    """Generate a random pastel color."""
-    r = random.uniform(0.6, 1.0)
-    g = random.uniform(0.6, 1.0)
-    b = random.uniform(0.6, 1.0)
-    return (r, g, b)
+def generate_accent_color():
+    """Generate a random accent color."""
+    accent_colors = [
+        (0.8, 0.2, 0.2),  # Red
+        (0.2, 0.8, 0.2),  # Green
+        (0.2, 0.2, 0.8),  # Blue
+        (0.8, 0.8, 0.2),  # Yellow
+        (0.8, 0.2, 0.8),  # Magenta
+        (0.2, 0.8, 0.8),  # Cyan
+    ]
+    return random.choice(accent_colors)
 
 def calculate_complement_color(color):
     """Calculate the complement color for an RGB color."""
     r, g, b = color
+    #return (256,236, 226)
     return (1.0 - r, 1.0 - g, 1.0 - b)
 
 def create_plot(polylines):
@@ -63,17 +69,17 @@ def create_plot(polylines):
             decoded_polyline = polyline.decode(polyline_str)
             lats, lons = zip(*decoded_polyline)
 
-            # Generate a random pastel color
-            pastel_color = generate_pastel_color()
-            complement_color = calculate_complement_color(pastel_color)
+            # Generate a random accent color
+            accent_color = generate_accent_color()
+            complement_color = calculate_complement_color(accent_color)
 
-            axs[i].plot(lons, lats, color=pastel_color, linewidth=2)
-            axs[i].set_facecolor(complement_color)
+            axs[i].plot(lons, lats, color=accent_color, linewidth=2)
+            axs[i].set_facecolor((*complement_color, 1.0))  # Set alpha to 1.0 for full opacity
             axs[i].set_xticks([])
             axs[i].set_yticks([])
             axs[i].grid(False)
-            axs[i].set_aspect('equal')
-            axs[i].axis('off')
+            #axs[i].set_aspect('equal')
+            axs[i].axis('on')
         except Exception as e:
             print(f"Error decoding polyline {i+1}: {str(e)}")
             continue
