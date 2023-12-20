@@ -11,7 +11,6 @@
             justify-content: center;
             height: 100vh;
             background-color: #f0f0f0;
-            font-family: Arial, sans-serif;
         }
 
         .card {
@@ -75,21 +74,8 @@
     </style>
 </head>
 <body>
+<a href="{{ login_url }}" id="login-button">Login with Strava</a>
 
-<div class="card">
-    <div class="card-inner">
-        <div class="card-front">
-            <div class="card-title">In 2023, I logged {{athlete_info['TotalDistance']}} miles</div>
-            <img src="data:image/png;base64,{{ plotdata }}" class="img-fluid" alt="Your Image">
-            
-        </div>
-        <div class="card-back">
-            <!-- Content for the back of the card -->
-            <p>This is the back of the card.</p>
-            <!-- Add more content as needed -->
-        </div>
-    </div>
-</div>
 
 </body>
 </html>

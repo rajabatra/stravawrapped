@@ -11,6 +11,12 @@
             margin: 50px;
         }
 
+        #strava-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
         #strava-wrapped {
             font-size: 24px;
             margin-bottom: 20px;
@@ -24,17 +30,21 @@
             color: #fff;
             background-color: #4285f4;
             border-radius: 5px;
+            margin-top: 10px;
         }
     </style>
 </head>
 <body>
-    <div id="strava-wrapped">Strava Wrapped</div>
-    {% if 'access_token' in session %}
-        
-        {% include 'dashboard.html' %}
-    {% else %}
-        <a href="{{ login_url }}" id="login-button">Login with Strava</a>
-    {% endif %}
+    <div id="strava-container">
+        <div id="strava-wrapped">Strava Wrapped</div>
+
+        {% if 'access_token' in session %}
+            {% include 'dashboard.html' %}
+        {% else %}
+            {% include 'login.html' %}   
+           
+        {% endif %}
+    </div>
     <!-- Your other content goes here -->
 </body>
 </html>
