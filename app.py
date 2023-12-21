@@ -105,6 +105,7 @@ def get_athlete_activities():
             'moving_time': activity['moving_time'],
             'total_elevation_gain': activity['total_elevation_gain'],
             'start_date': activity['start_date'],
+            'kudos_count': activity['kudos_count'],
             'summary_polyline': activity['map']['summary_polyline']
         }
         runs_data.append(run_info)

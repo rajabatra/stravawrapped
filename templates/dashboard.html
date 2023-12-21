@@ -6,88 +6,97 @@
     <style>
         body {
             margin: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            background-color: #f0f0f0;
-            font-family: Arial, sans-serif;
+            padding: 0;
+            background-color: #f0f0f0; /* Set a background color if needed */
+        }
+
+        .container {
+            height: 90vh; /* 90% of the viewport height */
+            width: calc(90vh * 9 / 16); /* 9:16 aspect ratio */
+            margin: 0 auto;
+            position: relative;
+            overflow: hidden;
         }
 
         .card {
-            perspective: 1000px;
-            width: 300px;
-            height: 80vh;
-            position: relative;
-            transform-style: preserve-3d;
-            transition: transform 0.5s;
-        }
-
-        .card:hover {
-            transform: rotateY(180deg);
-        }
-
-        .card-inner {
+            position: absolute;
+            top: 0;
+            left: 0;
             width: 100%;
             height: 100%;
-            position: absolute;
-            transform-style: preserve-3d;
-        }
-
-        .card-front,
-        .card-back {
-            width: 100%;
-            height: 100%;
-            position: absolute;
-            backface-visibility: hidden;
+            background: url('static/card.jpeg') center/cover no-repeat; /* Set the path to your image */
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            border-radius: 10px;
         }
 
-        .card-front {
-            transform: rotateY(0deg);
-            background-image: url('path/to/your/image.jpg');
-            background-size: cover; /* You can use other values like 'contain' based on your preference */
-            background-repeat: no-repeat;
-            background-position: center center;
+        .overlay-image {
+            position: absolute;
+            top: 20%;
+            left:50%;
+            transform: translateX(-50%);
+            max-width: 70%; /* Adjust the maximum width of the overlay image */
         }
-
-        .card-back {
-            transform: rotateY(180deg);
-            background-color: #ffffff;
+        .custom-text {
+            position: absolute;
+            top: 18%;
+            left: 70%;
+            transform: translateX(-50%);
+            font-size: 2vh; /* Adjust the font size as needed */
+            color: rgb(16.83, 79, 170.85); /* Text color */
+            font-family: 'Aileron', sans-serif;
+            font-weight: bold;
+        }.custom-distance {
+            position: absolute;
+            top: 72%;
+            left: 0%;
+            transform: translateX(25%);
+            font-size: 5vh; /* Adjust the font size as needed */
+            color: rgb(16.83, 79, 170.85); /* Text color */
+            font-family: 'Aileron', sans-serif;
+            font-weight: bold;
+        }.custom-time {
+            position: absolute;
+            top: 82%;
+            left: 48%;
+            transform: translateX(-50%);
+            font-size: 3.5vh; /* Adjust the font size as needed */
+            color: rgb(16.83, 79, 170.85); /* Text color */
+            font-family: 'Aileron', sans-serif;
+            font-weight: bold;
+        }.custom-kudos {
+            position: absolute;
+            top: 90%;
+            left: 30%;
+            transform: translateX(-50%);
+            font-size: 2.5vh; /* Adjust the font size as needed */
+            color: rgb(16.83, 79, 170.85); /* Text color */
+            font-family: 'Aileron', sans-serif;
+            font-weight: bold;
+        }.custom-max {
+            position: absolute;
+            top: 90%;
+            left: 60%;
+            transform: translateX(-10%);
+            font-size: 2.5vh; /* Adjust the font size as needed */
+            color: rgb(16.83, 79, 170.85); /* Text color */
+            font-family: 'Aileron', sans-serif;
+            font-weight: bold;
         }
-
-        .img-fluid {
-            max-width: 90%;
-            max-height: 90%;
-            border-radius: 8px;
-            padding: 10px;
-        }
-
-        .card-title {
-            font-size: 20px;
-            margin-bottom: 10px;
-        }
+        
     </style>
 </head>
 <body>
 
-<div class="card">
-    <div class="card-inner">
-        <div class="card-front">
-            <div class="card-title">YOUR RUNS TOOK MANY SHAPES</div>
-            <img src="data:image/png;base64,{{ plotdata }}" class="img-fluid" alt="Your Image">
-            
-        </div>
-        <div class="card-back">
-            <!-- Content for the back of the card -->
-            <p>This is the back of the card.</p>
-            <!-- Add more content as needed -->
-        </div>
+<div class="container">
+    <div class="card">
+        <img src="data:image/png;base64,{{ plotdata }}" class="overlay-image" alt="Your Image">
+        <!-- Add content of your card here -->
+        <div class="custom-text">{{athlete_info['number_act']}} ROUTES</div>
+        <div class="custom-distance">{{athlete_info['TotalDistance']}} MILES</div>
+        <div class="custom-time">{{athlete_info['TotalTime']}} HOURS</div>
+        <div class="custom-kudos">{{athlete_info['kudos_count']}} KUDOS</div>
+        <div class="custom-max">{{athlete_info['maxdist']}} MILES</div>
     </div>
 </div>
 

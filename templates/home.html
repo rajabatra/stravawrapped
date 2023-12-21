@@ -8,7 +8,7 @@
         body {
             font-family: Arial, sans-serif;
             text-align: center;
-            margin: 50px;
+            margin: 10px;
         }
 
         #strava-container {
@@ -20,7 +20,7 @@
         #strava-wrapped {
             font-size: 24px;
             margin-bottom: 20px;
-            padding: 10%;
+            padding: 1%;
         }
 
         #login-button {
@@ -44,7 +44,20 @@
             {% include 'login.html' %}   
            
         {% endif %}
+        <footer>
+            <p>&copy; <span id="currentYear"></span> By Raja Batra and potentially others??.</p>
+            <p><a href="https://github.com/rajabatra" target="_blank">GitHub</a>.</p>
+        </footer>
     </div>
     <!-- Your other content goes here -->
 </body>
+
+
+<script>
+    // Get the current year
+    var currentYear = new Date().getFullYear();
+
+    // Update the content of the element with id "currentYear"
+    document.getElementById("currentYear").textContent = currentYear;
+</script>
 </html>

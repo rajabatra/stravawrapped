@@ -14,19 +14,26 @@ import random
 def create_tables(df):
 
     totals = {}
-    totals = {'TotalDistance': 0, 'TotalTime': 0, 'latlng': {}}
+    maxdist = 0
+    totals = {'TotalDistance': 0, 'TotalTime': 0, 'latlng': {}, 'number_act': 0, 'kudos_count': 0, 'maxdist': 0}
     for index, row in df.iterrows():
         
         distance = row['distance']
         time = row['moving_time']
-        
+        kudos_count = row['kudos_count']
+        if distance>maxdist:
+            maxdist=distance
 
         
         
 
         totals['TotalDistance'] += distance
         totals['TotalTime'] += time
+        totals['kudos_count'] += kudos_count
+        totals['number_act'] += 1
     totals['TotalDistance'] = totals['TotalDistance']//1609
+    totals['TotalTime'] = totals['TotalTime']//3600
+    totals['maxdist'] = maxdist//1609
     df = df[df['summary_polyline'].apply(lambda x: bool(x))]
     coordinates = df['summary_polyline'].tolist()
     totals['latlng'] = coordinates
@@ -45,13 +52,16 @@ def generate_accent_color():
         (0.8, 0.2, 0.8),  # Magenta
         (0.2, 0.8, 0.8),  # Cyan
     ]
-    return random.choice(accent_colors)
+    return (1, 1, 1)
+    #return random.choice(accent_colors)
 
 def calculate_complement_color(color):
     """Calculate the complement color for an RGB color."""
     r, g, b = color
     #return (256,236, 226)
-    return (1.0 - r, 1.0 - g, 1.0 - b)
+    
+    return (0.06666666666666667, 0.31, 0.67)
+    #return (1.0 - r, 1.0 - g, 1.0 - b)
 
 def create_plot(polylines):
     polylines = polylines
@@ -60,7 +70,7 @@ def create_plot(polylines):
     num_rows = (num_polylines + num_cols - 1) // num_cols
 
     # Create a grid of subplots
-    fig, axs = plt.subplots(num_rows, num_cols, figsize=(10, 15), facecolor='none')
+    fig, axs = plt.subplots(num_rows, num_cols, figsize=(15, 17), facecolor='none')
     axs = axs.flatten()  # Flatten the 2D array of subplots
 
     # Plot each polyline in a subplot
