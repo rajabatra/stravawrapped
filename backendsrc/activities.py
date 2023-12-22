@@ -15,12 +15,13 @@ def create_tables(df):
 
     totals = {}
     maxdist = 0
-    totals = {'TotalDistance': 0, 'TotalTime': 0, 'latlng': {}, 'number_act': 0, 'kudos_count': 0, 'maxdist': 0}
+    totals = {'TotalDistance': 0, 'TotalTime': 0, 'latlng': {}, 'number_act': 0, 'kudos_count': 0, 'maxdist': 0, 'total_elevation_gain': 0}
     for index, row in df.iterrows():
         
         distance = row['distance']
         time = row['moving_time']
         kudos_count = row['kudos_count']
+        elevation = row['total_elevation_gain']
         if distance>maxdist:
             maxdist=distance
 
@@ -31,9 +32,11 @@ def create_tables(df):
         totals['TotalTime'] += time
         totals['kudos_count'] += kudos_count
         totals['number_act'] += 1
-    totals['TotalDistance'] = totals['TotalDistance']//1609
+        totals['total_elevation_gain'] += elevation
+    totals['TotalDistance'] = int(totals['TotalDistance']//1609)
     totals['TotalTime'] = totals['TotalTime']//3600
-    totals['maxdist'] = maxdist//1609
+    totals['maxdist'] = int(maxdist//1609)
+    totals['total_elevation_gain'] = int(totals['total_elevation_gain']*3.8)
     df = df[df['summary_polyline'].apply(lambda x: bool(x))]
     coordinates = df['summary_polyline'].tolist()
     totals['latlng'] = coordinates

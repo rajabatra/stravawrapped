@@ -35,31 +35,29 @@
             top: 20%;
             left:50%;
             transform: translateX(-50%);
-            max-width: 70%; /* Adjust the maximum width of the overlay image */
+            max-width: 72%; /* Adjust the maximum width of the overlay image */
         }
         .custom-text {
             position: absolute;
-            top: 17%;
-            left: 71%;
-            transform: translateX(-50%);
-            font-size: 2.2vh; /* Adjust the font size as needed */
+            top: 16.2%;
+            left: 50%;
+            transform: translateX(0%);
+            font-size: 3.1vh; /* Adjust the font size as needed */
             color: rgb(16.83, 79, 170.85); /* Text color */
             font-family: 'Aileron', sans-serif;
             font-weight: bold;
         }.custom-distance {
             position: absolute;
             top: 72%;
-            left: 0%;
-            transform: translateX(25%);
+            text-align: center;
             font-size: 5vh; /* Adjust the font size as needed */
             color: rgb(16.83, 79, 170.85); /* Text color */
             font-family: 'Aileron', sans-serif;
             font-weight: bold;
         }.custom-time {
             position: absolute;
-            top: 82%;
-            left: 48%;
-            transform: translateX(-50%);
+            top: 81%;
+            text-align: center;
             font-size: 3.5vh; /* Adjust the font size as needed */
             color: rgb(16.83, 79, 170.85); /* Text color */
             font-family: 'Aileron', sans-serif;
@@ -67,7 +65,7 @@
         }.custom-kudos {
             position: absolute;
             top: 90%;
-            left: 28%;
+            left: 20%;
             transform: translateX(-50%);
             font-size: 2.5vh; /* Adjust the font size as needed */
             color: rgb(16.83, 79, 170.85); /* Text color */
@@ -83,22 +81,80 @@
             font-family: 'Aileron', sans-serif;
             font-weight: bold;
         }
+        #image-container {
+            position: relative;
+            width: 300px; /* Adjust the width as needed */
+        }
+
+       
+
+    #share-dialog {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      padding: 20px;
+      background-color: #fff;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      z-index: 1000;
+    }
         
     </style>
 </head>
-<body>
-
+<body>  
 <div class="container">
     <div class="card">
         <img src="data:image/png;base64,{{ plotdata }}" class="overlay-image" alt="Your Image">
         <!-- Add content of your card here -->
-        <div class="custom-text">{{athlete_info['number_act']}} ROUTES</div>
-        <div class="custom-distance">{{athlete_info['TotalDistance']}} MILES</div>
-        <div class="custom-time">{{athlete_info['TotalTime']}} HOURS</div>
-        <div class="custom-kudos">{{athlete_info['kudos_count']}} KUDOS</div>
-        <div class="custom-max">{{athlete_info['maxdist']}} MILES</div>
+        <div class="custom-text">{{"{:,}".format(athlete_info['number_act'])}} ROUTES</div>
+        <div class="custom-distance">{{"{:,}".format(athlete_info['TotalDistance'])}} MILES</div>
+        <div class="custom-time">{{"{:,}".format(athlete_info['TotalTime'])}} HOURS</div>
+        <div class="custom-kudos">{{"{:,}".format(athlete_info['kudos_count'])}}</div>
+        <div class="custom-max">{{"{:,}".format(athlete_info['total_elevation_gain'])}} feet</div>
     </div>
+    
+   
+  
+    
+    
 </div>
 
+<script>
+    
+
+    function downloadImage() {
+        var container = document.querySelector(".card");
+
+        html2canvas(container).then(canvas => {
+            var link = document.createElement("a");
+            link.href = canvas.toDataURL("image/png");
+            link.download = "downloaded_image.png";
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        });
+    }
+
+    
+</script>
+
+<style>
+    .buttondownload {
+        margin-top: 20px; /* Adjust the margin as needed */
+        padding: 15px 30px;
+        background-color: #3498db;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px; /* Adjust the font size as needed */
+    }
+</style>
+
+<button class="buttondownload" onclick="downloadImage()">Save Recap</button>
 </body>
+<script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+
+
 </html>

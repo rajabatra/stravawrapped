@@ -30,16 +30,23 @@
         #info-icon {
             cursor: pointer;
             padding: 5px;
+        }.navbar-brand {
+            display: flex;
+            align-items: center;
+            height: 100%;
+        }
+        
+        .navbar-brand img {
+            height: 100%;
         }
     </style>
 </head>
 <body>
-    <!-- Bootstrap Navbar -->
     <nav class="navbar navbar-light bg-light">
         <div class="container-fluid">
-            <!-- Title -->
+            <!-- Custom Logo Image -->
             <a class="navbar-brand" href="#">
-                Strava Recap
+                <img src="/staticlogo.png" alt="Logo">
             </a>
             <!-- Question Mark Icon -->
             <span id="info-icon" data-bs-toggle="modal" data-bs-target="#infoModal">&#63;</span>
