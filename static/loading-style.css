@@ -1,0 +1,32 @@
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: #f4f4f4;
+}
+
+#loading-bar-container {
+    width: 300px;
+    height: 30px;
+    border: 1px solid #ccc;
+    position: relative;
+}
+
+#loading-bar {
+    height: 100%;
+    width: 0;
+    background-color: #4caf50;
+    position: absolute;
+    transition: width 5s ease-in-out;
+}
+
+#loading-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #333;
+}

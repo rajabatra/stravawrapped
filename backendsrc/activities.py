@@ -1,14 +1,8 @@
 import pandas as pd
 import base64
 from io import BytesIO
-import mplleaflet
-import folium
-from matplotlib.ticker import MaxNLocator
 import polyline
-from polyline import decode
 import matplotlib.pyplot as plt
-from matplotlib.gridspec import GridSpec
-import random
 
 
 def create_tables(df):
