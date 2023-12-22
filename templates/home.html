@@ -34,10 +34,9 @@
             display: flex;
             align-items: center;
             height: 100%;
-        }
-        
-        .navbar-brand img {
-            height: 100%;
+        }.navbar-brand img {
+            max-height: 30px; /* Adjust the max-height according to your needs */
+            width: auto;
         }
     </style>
 </head>
@@ -46,7 +45,7 @@
         <div class="container-fluid">
             <!-- Custom Logo Image -->
             <a class="navbar-brand" href="#">
-                <img src="/staticlogo.png" alt="Logo">
+                <img src="static/logo.png" alt="Logo">
             </a>
             <!-- Question Mark Icon -->
             <span id="info-icon" data-bs-toggle="modal" data-bs-target="#infoModal">&#63;</span>
