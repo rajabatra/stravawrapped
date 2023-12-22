@@ -27,7 +27,6 @@ def home():
     else:
         return render_template('home.html', login_url=url_for('login'))
 
-
 @app.route('/loading', methods=['GET', 'POST'])
 def loading_async():
     return render_template('loading.html', next_url=url_for('home_async'))
@@ -57,7 +56,7 @@ def callback():
             session['access_token'] = token_response['access_token']
     return redirect(url_for('home'))
     
-    
+
 
 def get_token(code):
     data = {
