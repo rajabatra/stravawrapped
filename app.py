@@ -9,8 +9,8 @@ from backendsrc import activities
 app = Flask(__name__)
 
 # Replace these values with your Strava API credentials
-CLIENT_ID = '118376'
-CLIENT_SECRET = 'b7e06ff027a718b797b30e40395d3ee8ba5ea314'
+CLIENT_ID = 'clientid'
+CLIENT_SECRET = 'clientsecret'
 REDIRECT_URI = 'http://localhost:8000/callback'  # Update with your actual callback URI
 AUTH_URL = 'https://www.strava.com/oauth/authorize'
 TOKEN_URL = 'https://www.strava.com/oauth/token'
