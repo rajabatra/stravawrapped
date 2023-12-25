@@ -42,9 +42,9 @@ def check_and_update_usage():
 
 
 # Replace these values with your Strava API credentials
-CLIENT_ID = '118376'
-CLIENT_SECRET = 'b7e06ff027a718b797b30e40395d3ee8ba5ea314'
-#REDIRECT_URI = 'http://127.0.0.1:5000/callback'  # Update with your actual callback URI
+CLIENT_ID = 'na'
+CLIENT_SECRET = 'na'
+#REDIRECT_URI = 'http://127.0.0.1:5000/callback'  # for testing
 AUTH_URL = 'https://www.strava.com/oauth/authorize'
 REDIRECT_URI = 'http://www.strecap.com/callback' 
 TOKEN_URL = 'https://www.strava.com/oauth/token'
