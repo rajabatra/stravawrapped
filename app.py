@@ -22,7 +22,20 @@ app.secret_key = os.urandom(24)
 @app.route('/')
 def home():
     if 'access_token' in session:
-       
+        # Render the loading page while home page is being built
+        return redirect('/loading')
+    else:
+        return render_template('home.html', login_url=url_for('login'))
+
+@app.route('/loading', methods=['GET', 'POST'])
+def loading_async():
+    return render_template('loading.html', next_url=url_for('home_async'))
+
+
+@app.route('/home-async', methods=['GET', 'POST'])
+def home_async():
+    if 'access_token' in session:
+        # Perform time-consuming operations (e.g., get athlete activities)
         athlete_info = get_athlete_activities()
         totaldistance = activities.create_tables(athlete_info)
         plotdata = activities.create_plot(totaldistance['latlng'])
@@ -42,9 +55,8 @@ def callback():
         if 'access_token' in token_response:
             session['access_token'] = token_response['access_token']
     return redirect(url_for('home'))
-
-
     
+
 
 def get_token(code):
     data = {
