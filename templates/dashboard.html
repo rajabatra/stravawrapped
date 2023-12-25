@@ -7,12 +7,12 @@
         body {
             margin: 0;
             padding: 0;
-            background-color: #f0f0f0; /* Set a background color if needed */
+            background-color: #f0f0f0; 
         }
 
         .container {
-            height: 90vh; /* 90% of the viewport height */
-            width: calc(90vh * 9 / 16); /* 9:16 aspect ratio */
+            height: 75vh; 
+            width: calc(75vh * 9 / 16); 
             margin: 0 auto;
             position: relative;
             overflow: hidden;
@@ -33,7 +33,7 @@
         .overlay-image {
             position: absolute;
             top: 20%;
-            left:50%;
+            left:51%;
             transform: translateX(-50%);
             max-width: 72%; /* Adjust the maximum width of the overlay image */
         }
@@ -103,7 +103,16 @@
     </style>
 </head>
 <body>  
-<div class="container">
+<div class="text-card">
+        <div class="text-container">
+            <!-- New element for the text -->
+            <div class="share-text">
+                Your Recap
+            </div>
+        </div>
+ </div>
+ 
+ <div class="container">
     <div class="card">
         <img src="data:image/png;base64,{{ plotdata }}" class="overlay-image" alt="Your Image">
         <!-- Add content of your card here -->
@@ -114,14 +123,52 @@
         <div class="custom-max">{{"{:,}".format(athlete_info['total_elevation_gain'])}} FEET</div>
     </div>
     
-   
+    
   
     
     
 </div>
 
+
 <script>
-    
+    var athlete_info = {{ athlete_info | tojson | safe }};
+    function toggleUnits() {
+        var isMetric = document.body.classList.toggle('metric');
+
+        // Update distance and elevation values
+        updateValues(isMetric);
+
+        // Update the button text based on the current units
+        updateButtonText(isMetric);
+    }
+    function updateValues(isMetric) {
+        var distanceElement = document.querySelector('.custom-distance');
+        var elevationElement = document.querySelector('.custom-max');
+
+        var totalDistance = parseInt(athlete_info['TotalDistance']);
+        var totalElevation = parseInt(athlete_info['total_elevation_gain']);
+
+        if (isMetric) {
+            // Convert to metric units
+            totalDistance = Math.round(totalDistance * 1.60934); // Miles to kilometers
+            totalElevation = Math.round(totalElevation * 0.3048); // Feet to meters
+
+            // Update text
+            distanceElement.textContent = `${totalDistance.toLocaleString()} KM`;
+            elevationElement.textContent = `${totalElevation.toLocaleString()} M`;
+        } else {
+            // Display in imperial units
+            distanceElement.textContent = `${totalDistance.toLocaleString()} MILES`;
+            elevationElement.textContent = `${totalElevation.toLocaleString()} FEET`;
+        }
+    }
+
+    // Function to update button text based on units
+    function updateButtonText(isMetric) {
+        var toggleUnitsButton = document.getElementById('toggleUnitsButton');
+        toggleUnitsButton.textContent = isMetric ? 'Switch to Imperial' : 'Switch to Metric';
+    }
+    updateValues(false);
 
     function downloadImage() {
         var container = document.querySelector(".card");
@@ -141,7 +188,7 @@
 
 <style>
     .buttondownload {
-        margin-top: 20px; /* Adjust the margin as needed */
+       
         padding: 15px 30px;
         background-color: #3498db;
         color: #fff;
@@ -149,10 +196,60 @@
         border-radius: 5px;
         cursor: pointer;
         font-size: 16px; /* Adjust the font size as needed */
+    }.text-card {
+        width: 90%; /* Set a default width */
+        max-width: calc(90vh * 9 / 16);
+        margin: 20px auto; /* Adjust the margin and center the card */
+        background-color: #fff; /* Background color for the card */
+        border-radius: 10px; /* Border radius for a rounded card */
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Box shadow for a subtle effect */
+    }.button-card {
+        width: 90%; /* Set a default width */
+        max-width: calc(90vh * 9 / 16);
+        margin: 20px auto; /* Adjust the margin and center the card */
+        
+        border-radius: 10px; /* Border radius for a rounded card */
+       
+    }
+
+
+    .text-container {
+        padding: 20px; /* Padding inside the text card */
+    }
+
+    .share-text {
+        text-align: center; /* Center align the text */
+        font-size: 2vh; /* Adjust the font size as needed */
+        color: rgb(16.83, 79, 170.85);
+        font-family: 'Aileron', sans-serif;
+        font-weight: bold;
+    }#toggleUnitsButton {
+        padding: 10px 20px;
+        background-color: #3498db;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        transition: background-color 0.3s ease;
+    }
+
+    #toggleUnitsButton:hover {
+        background-color: #2980b9;
     }
 </style>
-
-<button class="buttondownload" onclick="downloadImage()">Save Recap</button>
+<div class="text-card">
+    <div class="text-container">
+        <!-- New element for the text -->
+        <div class="share-text">
+            Screenshot is the best method to share
+        </div>
+    </div>
+</div>
+<div class="button-card">
+    <button id="toggleUnitsButton" onclick="toggleUnits()">Switch to Metric</button>
+   </div>
+<button class="buttondownload" onclick="downloadImage()">Download Recap</button>
 </body>
 <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 

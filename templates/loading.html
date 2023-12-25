@@ -1,26 +1,18 @@
-<!-- loading.html -->
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Loading...</title>
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            // Use jQuery to make an AJAX request to your Flask route
-            $.ajax({
-                type: 'GET',
-                url: '/fetch',  // Update this to the correct route
-                success: function() {
-                    // Redirect to the home page once the fetch function is complete
-                    window.location.href = '/home';  // Update this to the correct route
-                }
-            });
-        });
-    </script>
+    <link rel="stylesheet" href={{ url_for('static', filename='loading-style.css') }}>
+    <script src={{ url_for('static', filename='loading.js') }}></script>
 </head>
+
 <body>
-    <p>Loading...</p>
+    <div id="loading-bar-container">
+        <div id="loading-bar"></div>
+        <div id="loading-text">Loading Strava Profile...</div>
+    </div>
 </body>
+
 </html>

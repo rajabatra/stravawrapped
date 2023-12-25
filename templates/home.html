@@ -3,7 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Strava Recap</title>
+    <title>          
+            Strava Recap
+    </title>
+    <link rel="icon" type="image/png" href="/static/icon.png">
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
@@ -17,7 +20,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 3%;
+            padding: 1%;
         }
 
         #strava-wrapped {
@@ -47,6 +50,10 @@
             <a class="navbar-brand" href="#">
                 <img src="static/logo.png" alt="Logo">
             </a>
+            <a class="navbar-brand" href="#">
+                <img src="static/apilogo.png" alt="Logo">
+            </a>
+            
             <!-- Question Mark Icon -->
             <span id="info-icon" data-bs-toggle="modal" data-bs-target="#infoModal">&#63;</span>
         </div>
@@ -71,8 +78,10 @@
                 </div>
                 <div class="modal-body">
                    
-                    <p>&copy; <span id="currentYear"></span> By Raja Batra and potentially others??.</p>
+                    <p>&copy; <span id="currentYear"></span> This website is designed to share information from your strava activities for the current year to give you a strava recap. The app can take upwards of 10 seconds to load since it requires reading all your activities. None of the account data used by STrecap is stored or collected, and it is not shared with any third parties. By using STrecap, you agree to the use of your strava account information. </p>
+                    <p>This website was built by Raja Batra. Please direct any questions to rajabatra09@gmail.com </p>
                     <p><a href="https://github.com/rajabatra" target="_blank">GitHub</a>.</p>
+                    <p><a href="https://strava.com/dashboard" target="_blank">Link To Strava</a>.</p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
