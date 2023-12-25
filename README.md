@@ -7,4 +7,4 @@ The website was released in the last week of december in 2023 and saw over 5000 
 <img width="575" alt="image" src="https://github.com/rajabatra/stravawrapped/assets/7356226/e81989a3-8a39-4c25-9f8c-38d4dfc95d64">
 </p>
 
-The website was built in a flask environment with python, HTML, CSS, and JavaScript.  
+The website was built in a flask environment with python, HTML, CSS, and JavaScript. Data is accesed using the Strava API and currently limited to 2000 calls a day ~ 1000 users 
