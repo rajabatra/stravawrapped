@@ -3,16 +3,50 @@ from flask import Flask, redirect, url_for, session, request, jsonify, render_te
 import requests
 import os
 import pandas as pd
+import time
 
 from backendsrc import activities
 
 app = Flask(__name__)
 
+
+MAX_CALLS_PER_15_MINUTES = 200
+MAX_CALLS_PER_DAY = 2000
+api_usage = {
+    'last_reset': None,
+    'calls_15min': 0,
+    'calls_today': 0
+}
+def check_and_update_usage():
+    now = datetime.datetime.utcnow()
+
+    # Check if it's a new day
+    if api_usage['last_reset'] is None or api_usage['last_reset'].date() != now.date():
+        api_usage['last_reset'] = now
+        api_usage['calls_today'] = 0
+
+    # Check 15-minute limit
+    if api_usage['calls_15min'] >= MAX_CALLS_PER_15_MINUTES:
+        return False
+
+    # Check daily limit
+    if api_usage['calls_today'] >= MAX_CALLS_PER_DAY:
+        return False
+
+    # Update API usage
+    api_usage['calls_15min'] += 1
+    api_usage['calls_today'] += 1
+
+    return True
+
+
+
 # Replace these values with your Strava API credentials
-CLIENT_ID = 'clientid'
-CLIENT_SECRET = 'clientsecret'
-REDIRECT_URI = 'http://localhost:8000/callback'  # Update with your actual callback URI
+CLIENT_ID = '118376'
+CLIENT_SECRET = 'b7e06ff027a718b797b30e40395d3ee8ba5ea314'
+#REDIRECT_URI = 'http://127.0.0.1:5000/callback'  # Update with your actual callback URI
 AUTH_URL = 'https://www.strava.com/oauth/authorize'
+REDIRECT_URI = 'http://www.strecap.com/callback' 
 TOKEN_URL = 'https://www.strava.com/oauth/token'
 API_URL = 'https://www.strava.com/api/v3'
 
@@ -21,12 +55,14 @@ app.secret_key = os.urandom(24)
 
 @app.route('/')
 def home():
-    if 'access_token' in session:
-       
+    if 'access_token' in session and check_and_update_usage():
+        
         athlete_info = get_athlete_activities()
         totaldistance = activities.create_tables(athlete_info)
         plotdata = activities.create_plot(totaldistance['latlng'])
         return render_template('home.html', athlete_info=totaldistance, plotdata=plotdata)
+    elif 'access_token' in session:
+        return render_template('ratelimit_error.html')
     else:
         return render_template('home.html', login_url=url_for('login'))
 
@@ -43,8 +79,6 @@ def callback():
             session['access_token'] = token_response['access_token']
     return redirect(url_for('home'))
 
-
-    
 
 def get_token(code):
     data = {
@@ -103,9 +137,6 @@ def get_athlete_activities():
     df = pd.DataFrame(runs_data)
     return df
     #return activities
-
-
-
 
 
 
